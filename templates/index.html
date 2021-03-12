@@ -6,18 +6,20 @@
   <body>
     <h1>Current CPU usage:</h1>
     <p id="cpu">Loading...</p>
+    <h1>ServerStatus status:</h1>
+    <p id="website-status">Online</p>
     <script>
       async function cpu(){
 let response = await fetch('/cpu');
-
 if (response.ok) { // if HTTP-status is 200-299
   // get the response body (the method explained below)
   let stats = await response.json();
   document.getElementById("cpu").innerHTML = stats.cpu +"%"
+  document.getElementById("website-status").innerHTML = "Online"
 } else {
   document.getElementById("cpu").innerHTML = "ERROR: " + response.status;
-}
-      }
+  document.getElementById("website-status").innerHTML = "Offline"
+}}
       
 cpu()
 setInterval(cpu, 2000)
