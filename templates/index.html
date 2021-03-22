@@ -2,6 +2,7 @@
 <html>
   <head>
 <title>ServerStatus Monitor</title>
+<script src="https://cdn.plot.ly/plotly-latest.min.js" charset="utf-8"></script>
   </head>
   <body>
     <h1>Current CPU usage:</h1>
@@ -10,7 +11,17 @@
     <p id="website-status">Online</p>
     <h5>Booted at: {{booted_at}}</h5>
     <p id="version">Version: Loading...</p>
+    <div id="cpu-graph"></div>
     <script>
+      var idSet = false;
+      var id = null
+       const cpuGraph = document.getElementById("cpu-graph");
+      var cpuUsage = {
+        x: [0],
+        y: [0],
+        type: "scatter"
+      }
+       Plotly.newPlot(cpuGraph, cpuUsage);
       async function cpu(){
 let response = await fetch('/cpu');
 if (response.ok) { // if HTTP-status is 200-299
@@ -19,6 +30,20 @@ if (response.ok) { // if HTTP-status is 200-299
   document.getElementById("cpu").innerHTML = stats.cpu +"%"
   document.getElementById("website-status").innerHTML = "Online"
   document.getElementById("version").innerHTML = "Version:" + stats.version.toString();
+  cpuUsage.x.push(cpuUsage.x.length-1);
+  cpuUsage.y.push(parseFloat(stats.cpu));
+  console.log(cpuUsage)
+  if(!idSet){
+    id = stats.servID
+    idSet = true;
+  } else {
+    if(stats.servID != id){
+      console.error("Outdated Client - Reloading page in 5 seconds");
+      document.getElementById("version").innerHTML = "An update is available - reloading page in 5 seconds";
+      setTimeout(()=>{location.reload();}, 5000);
+    }
+  }
+
 } else {
   document.getElementById("cpu").innerHTML = "ERROR: " + response.status;
   document.getElementById("website-status").innerHTML = "Offline"
@@ -26,6 +51,7 @@ if (response.ok) { // if HTTP-status is 200-299
       
 cpu()
 setInterval(cpu, 2000)
+
     </script>
   </body>
 </html>
