@@ -1,0 +1,32 @@
+body {
+    background-color: #ededed;
+}
+
+.navbar {
+    background-color: #001666;
+}
+
+.login {
+    max-width: 300px;
+    right: 0;
+    text-align: right;
+}
+
+.stat {
+    background-color: #878787;
+    border-radius: 3px;
+    transition: 2s;
+}
+.stat:hover {
+    background-color:#ababab;
+    transition: 2s;
+}
+
+.statNum {
+    font-style: italic;
+}
+
+.version {
+    font-style: italic;
+    color: #535353;
+}

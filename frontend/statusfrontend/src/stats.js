@@ -1,5 +1,20 @@
 import React from 'react'
-import {Card, Typography, CardContent} from '@material-ui/core'
+import {Card, Typography, CardContent, Button, Grid, CircularProgress, Snackbar} from '@material-ui/core'
+import MuiAlert from '@material-ui/lab/Alert';
+import "./Styles.css"
+const apiURL = "https://ServerStatus.brysonvan1.repl.co/cpu"
+
+function Alert(props){
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+function CircleLoader(props){
+    if(props.hide){
+        return null
+    } else {
+        return (<CircularProgress />)
+    }
+}
 
 class Stats extends React.Component {
     constructor(props){
@@ -7,43 +22,58 @@ class Stats extends React.Component {
         this.state = {
             isLoaded: false,
             error: null,
-            res: null
+            items: "Not Loaded",
+            version: "Not Loaded"
         }
     }
 
-    componentDidMount() {
-       
-        fetch("http://api.mocki.io/v1/7633c913", {
-                "method": "GET",
-                "mode": 'no-cors'
+    getStats(){
+        this.setState({isLoaded: false, items: "Loading..."})
+        fetch(apiURL).then(res => res.json() ) .then(json => {
+         
+        this.setState ({
+              isLoaded: true,
+              items: json.cpu.toString() + "%",
+              version: json.version.toString()
+           })
+        }).catch((err) => {
+            console.log(err)
+            this.setState({
+                isLoaded: false,
+                error: err.toString()
             })
-            .then(response => response.json())
-            .then(response => {
-                this.setState({
-                    res: response
-                })
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        })
     }
+    componentDidMount() {
+        this.getStats()
+     }
     
-
     render() {
         return (
-            <Card variant="outlined">
-                <CardContent>
-                    <Typography color="primary">
-                        CPU Stats:
+            <>
+            <Grid container spacing={3}>
+                <Grid item >
+                <Card variant="outlined" >
+                <CardContent className="stat">
+                    <CircleLoader hide={this.state.isLoaded} />
+                    <Typography variant="h5">
+                        CPU Usage:
                     </Typography>
-                    <Typography color="secondary">
-                        33%
-                    </Typography>
-                    <Typography>
-                        {this.state.error}
+                    <Typography variant="h6" className="statNum">
+                       {this.state.items}
                     </Typography>
                 </CardContent>
-            </Card>
+                </Card>
+            </Grid>
+            </Grid>
+            <Button onClick={this.getStats.bind(this)}>
+                Resync Stats
+            </Button>
+            <Typography className="version">{"Version: " + this.state.version}</Typography>
+            <Snackbar open={this.state.error} autoHideDuration={3000}>
+                <Alert severity="error">{this.state.error}</Alert>
+            </Snackbar>
+            </>
         )
     }
 }

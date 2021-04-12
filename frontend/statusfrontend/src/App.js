@@ -1,15 +1,16 @@
-import Stats from "./stats"
-import './App.css';
+import './Styles.css';
 import React from 'react'
-import Menu from "./menu"
+import TopMenu from "./menu"
+import Stats from "./stats"
 
 function App() {
   return (
     <div className="App">
-      <Menu />
+      <TopMenu />
+      <br />
       <Stats />
     </div>
   );
 }
 
-export default App;
+export default App
