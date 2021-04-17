@@ -1,6 +1,8 @@
 import React from 'react'
 import {Card, Typography, CardContent, Button, Grid, CircularProgress, Snackbar} from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert';
+import StatCard from "./components/cpu-card.js"
+import Disk from "./components/disk-card.js"
 import "./Styles.css"
 const apiURL = "https://ServerStatus.brysonvan1.repl.co/cpu"
 
@@ -8,13 +10,7 @@ function Alert(props){
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-function CircleLoader(props){
-    if(props.hide){
-        return null
-    } else {
-        return (<CircularProgress />)
-    }
-}
+
 
 class Stats extends React.Component {
     constructor(props){
@@ -22,22 +18,25 @@ class Stats extends React.Component {
         this.state = {
             isLoaded: false,
             error: null,
-            items: "Not Loaded",
+            cpu: {cpuPer: "Not Loaded"},
+            disk: {used: null, total: null},
             version: "Not Loaded"
         }
     }
 
-    getStats(){
-        this.setState({isLoaded: false, items: "Loading..."})
-        fetch(apiURL).then(res => res.json() ) .then(json => {
-         
-        this.setState ({
-              isLoaded: true,
-              items: json.cpu.toString() + "%",
-              version: json.version.toString()
-           })
+    getStats(interupt){
+        if(interupt){
+            this.setState({isLoaded: false, items: "Loading..."})
+        }
+        fetch(apiURL).then(res => res.json()) .then(json => {
+            this.setState ({
+                isLoaded: true,
+                cpu: {cpuPer: json.cpu.toString() + "%"},
+                disk: {used: json.usedDisk, total: json.totalDisk},
+                version: json.version.toString()
+            })
         }).catch((err) => {
-            console.log(err)
+            console.error(err)
             this.setState({
                 isLoaded: false,
                 error: err.toString()
@@ -45,26 +44,25 @@ class Stats extends React.Component {
         })
     }
     componentDidMount() {
-        this.getStats()
+        this.getStats(true)
+        setTimeout(()=> {
+            setInterval(() => {
+                this.getStats(false);
+            }, 2000)
+        }, 5000)
+        
      }
     
+     componentDidUpdate(){
+         console.log(this.state);
+     }
+
     render() {
         return (
             <>
             <Grid container spacing={3}>
-                <Grid item >
-                <Card variant="outlined" >
-                <CardContent className="stat">
-                    <CircleLoader hide={this.state.isLoaded} />
-                    <Typography variant="h5">
-                        CPU Usage:
-                    </Typography>
-                    <Typography variant="h6" className="statNum">
-                       {this.state.items}
-                    </Typography>
-                </CardContent>
-                </Card>
-            </Grid>
+                <StatCard stat="CPU Usage" val={this.state.cpu.cpuPer} loading={this.state.isLoaded} />
+                <Disk stat="Disk Usage" val={{used: this.state.disk.used, total: this.state.disk.total}} loading={this.state.isLoaded} />
             </Grid>
             <Button onClick={this.getStats.bind(this)}>
                 Resync Stats

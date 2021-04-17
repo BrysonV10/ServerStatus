@@ -12,13 +12,43 @@ body {
     text-align: right;
 }
 
-.stat {
+.gray-card {
     background-color: #878787;
     border-radius: 3px;
     transition: 2s;
 }
-.stat:hover {
+.gray-card:hover {
     background-color:#ababab;
+    transition: 2s;
+}
+
+.yellow-card {
+    background-color: #ccba18;
+    border-radius: 3px;
+    transition: 2s;
+}
+.yellow-card:hover {
+    background-color:#ffe600;
+    transition: 2s;
+}
+
+.orange-card {
+    background-color: #c56900;
+    border-radius: 3px;
+    transition: 2s;
+}
+.orange-card:hover {
+    background-color:#f87b15;
+    transition: 2s;
+}
+
+.red-card {
+    background-color: #6d0000;
+    border-radius: 3px;
+    transition: 2s;
+}
+.red-card:hover {
+    background-color:#ff0000;
     transition: 2s;
 }
 
@@ -29,4 +59,9 @@ body {
 .version {
     font-style: italic;
     color: #535353;
+}
+
+
+.circlebar {
+    border-color: black;
 }
