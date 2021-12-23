@@ -1,7 +1,8 @@
 import React from "react"
-import {Box, Grid, Card, CardContent, CircularProgress, Typography} from "@mui/material"
+import {Box, Grid, Card, CardContent, CircularProgress, Typography, IconButton} from "@mui/material"
 import "../Styles.css"
 import OutboundIcon from '@mui/icons-material/Outbound';
+import CpuModal from "./cpu-graph";
 function CircleLoader(props){
     if(props.hide){
         return null
@@ -41,8 +42,10 @@ class StatCard extends React.Component {
         super(props);
         this.mounted = false;
         this.state ={
-            color: "gray-card"
+            color: "gray-card",
+            modalOpen: false
         }
+        this.changeModalState = this.changeModalState.bind(this)
     }
     
     componentDidMount(){
@@ -72,7 +75,13 @@ class StatCard extends React.Component {
             return;
         }
     }
-
+    changeModalState(){
+        if(this.state.modalOpen){
+            this.setState({modalOpen: false});
+        } else {
+            this.setState({modalOpen: true});
+        }
+    }
     render(){
         return (
             <Grid item >
@@ -80,15 +89,20 @@ class StatCard extends React.Component {
                 <CardContent className={this.state.color}>
                 <center>
                     <CircleLoader hide={this.props.loading} />
+                    
                     <Typography variant="h5">
                         {this.props.stat}
+                        
                     </Typography>
-                    
-                    <CircularProgressWithLabel thickness={5} value={this.props.val} color="inherit"/>
+                        
+                    <IconButton edge="start" color="inherit" aria-label="CPU Live View" onClick={this.changeModalState}>
+                        <CircularProgressWithLabel thickness={5} value={this.props.val} color="inherit"/>
+                    </IconButton>
                     <br/>
                     <Typography variant="p" style={{fontFamily: 'Roboto'}}>{this.props.extraInfo}</Typography>
-                    <br/>
-                    <OutboundIcon/>
+                    <br/> 
+                    
+                    <CpuModal cpuStat={this.props.val} open={this.state.modalOpen} handleClose={this.changeModalState}/>
                     </center>
                 </CardContent>
                 </Card>
