@@ -1,7 +1,7 @@
 import React from "react"
-import {Grid, Card, CardContent, CircularProgress, Typography} from "@material-ui/core"
+import {Box, Grid, Card, CardContent, CircularProgress, Typography} from "@mui/material"
 import "../Styles.css"
-
+import OutboundIcon from '@mui/icons-material/Outbound';
 function CircleLoader(props){
     if(props.hide){
         return null
@@ -10,6 +10,31 @@ function CircleLoader(props){
     }
 }
 
+function CircularProgressWithLabel(props) {
+    return (
+      <Box position="relative" display="inline-flex">
+        <CircularProgress variant="determinate" className="circlebar" {...props} />
+        <Box
+          top={0}
+          left={0}
+          bottom={0}
+          right={0}
+          position="absolute"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Typography variant="caption" component="div" color="textSecondary">
+            <strong>
+            {`${Math.round(
+            props.value,
+          )}%`}
+            </strong>
+            </Typography>
+        </Box>
+      </Box>
+    );
+  }
 
 class StatCard extends React.Component {
     constructor(props) {
@@ -27,7 +52,7 @@ class StatCard extends React.Component {
     componentDidUpdate(prevProps, prevState){
         if(!this.mounted) return;
         if(this.props.val == "undefined" || !this.props.val) return;
-        let percent = this.props.val.slice(0, this.props.val.length-1)
+        let percent = this.props.val
         percent = parseInt(percent);
         if(percent > 0 && percent < 25){
             if(prevState.color == "gray-card") return;
@@ -53,13 +78,18 @@ class StatCard extends React.Component {
             <Grid item >
                 <Card variant="outlined"  >
                 <CardContent className={this.state.color}>
+                <center>
                     <CircleLoader hide={this.props.loading} />
                     <Typography variant="h5">
                         {this.props.stat}
                     </Typography>
-                    <Typography variant="h6" className="statNum">
-                       {this.props.val}
-                    </Typography>
+                    
+                    <CircularProgressWithLabel thickness={5} value={this.props.val} color="inherit"/>
+                    <br/>
+                    <Typography variant="p" style={{fontFamily: 'Roboto'}}>{this.props.extraInfo}</Typography>
+                    <br/>
+                    <OutboundIcon/>
+                    </center>
                 </CardContent>
                 </Card>
             </Grid>

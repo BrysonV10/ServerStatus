@@ -43,12 +43,22 @@ body {
 }
 
 .red-card {
-    background-color: #6d0000;
+    background-color: #940000;
     border-radius: 3px;
     transition: 2s;
 }
 .red-card:hover {
     background-color:#ff0000;
+    transition: 2s;
+}
+
+.green-card {
+    background-color: #139901;
+    border-radius: 3px;
+    transition: 2s;
+}
+.green-card:hover {
+    background-color:#53cf00;
     transition: 2s;
 }
 

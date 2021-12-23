@@ -1,5 +1,5 @@
 import React from "react"
-import {Box, CircularProgress, Typography, Grid, Card, CardContent} from "@material-ui/core"
+import {Box, CircularProgress, Typography, Grid, Card, CardContent} from "@mui/material"
 import "../Styles.css"
 
 /**
