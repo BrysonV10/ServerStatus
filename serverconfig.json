@@ -1,0 +1,42 @@
+{
+  "general": {
+    "computerNickname": "Keith on Replit",
+    "cacheTime": 10
+  },
+  "mc-servers": [
+    {
+      "name": "Lifesteal",
+      "ip": "",
+      "hideIp": true,
+      "isPrivate": false,
+      "maintenanceMsg": null,
+      "websocket": false,
+      "websocketip": "o"
+    },
+    {
+      "name": "Vanilla Java",
+      "ip": "",
+      "hideIp": true,
+      "isPrivate": true,
+      "maintenanceMsg": "Currently being updated!",
+      "websocket": false
+    }
+  ],
+  "terraria-servers": [
+    {
+      "name": "Terraria Test Server", 
+      "ip": "",
+      "hideIp": true,
+      "maintenanceMsg": null
+    },
+    {
+      "name": "TShock Server", 
+      "ip": "",
+      "hideIp": true,
+      "maintenanceMsg": null,
+      "usingTshock": true,
+      "tshockUrl": ""
+    }
+  ]
+}
+
