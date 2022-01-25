@@ -11,15 +11,9 @@ db = pickledb.load("data.db", False)
 
 
 
-
-
-
-
 @app.route('/')
 def index():
-  OS_Info = subprocess.run(["cat", "/etc/os-release"],stdout=subprocess.PIPE)
-  OS_Info = OS_Info.stdout.decode('utf-8')
-  return flask.render_template('index.html', booted_at=booted_at_time)
+  return "Pong"
 
 #On Load Only
 @app.route("/setup")
@@ -62,11 +56,15 @@ if __name__ == '__main__':
     CacheTime = data["general"]["cacheTime"]
   except Exception:
     CacheTime = 15
+  try:
+    FlaskPort = data["general"]["flaskPort"]
+  except Exception:
+    FlaskPort = 5000
   del data
   log = logging.getLogger('werkzeug')
   log.setLevel(logging.ERROR)
   th = threading.Thread(target=getStats, args=[loadedServers, terrariaServers, server_ID, db, CacheTime])
   th.start()
-  app.run(host='0.0.0.0')
+  app.run(host='0.0.0.0', port=FlaskPort)
 
 

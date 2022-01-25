@@ -24,9 +24,12 @@ class TerrariaServer():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.settimeout(3)
     try:
-      s.connect((self.ip, int(self.port)))
-      s.shutdown(2)
-      responseObj["online"] = True
+      result = s.connect_ex((self.ip, int(self.port)))
+      if result == 0:
+        responseObj["online"] = True
+      else:
+        responseObj["online"] = False
+      s.close()
       return responseObj
     except Exception:
       responseObj["online"] = False

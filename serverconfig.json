@@ -1,21 +1,22 @@
 {
   "general": {
     "computerNickname": "Keith on Replit",
-    "cacheTime": 10
+    "cacheTime": 10,
+    "flaskPort": 5000
   },
   "mc-servers": [
     {
       "name": "Lifesteal",
-      "ip": "",
+      "ip": "24.247.253.198:8112",
       "hideIp": true,
       "isPrivate": false,
       "maintenanceMsg": null,
       "websocket": false,
-      "websocketip": "o"
+      "websocketip": "wss://testsocketserver.brysonvan1.repl.co"
     },
     {
       "name": "Vanilla Java",
-      "ip": "",
+      "ip": "24.247.253.198",
       "hideIp": true,
       "isPrivate": true,
       "maintenanceMsg": "Currently being updated!",
@@ -25,17 +26,17 @@
   "terraria-servers": [
     {
       "name": "Terraria Test Server", 
-      "ip": "",
+      "ip": "24.247.253.198:33933",
       "hideIp": true,
       "maintenanceMsg": null
     },
     {
       "name": "TShock Server", 
-      "ip": "",
+      "ip": "24.247.253.198:33933",
       "hideIp": true,
       "maintenanceMsg": null,
       "usingTshock": true,
-      "tshockUrl": ""
+      "tshockUrl": "http://24.247.253.198:33933/"
     }
   ]
 }
