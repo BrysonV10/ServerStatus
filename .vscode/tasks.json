@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+        {
+            "type": "npm",
+            "script": "start",
+            "path": "frontend/statusfrontend/",
+            "problemMatcher": [],
+            "label": "npm: start - frontend/statusfrontend",
+            "detail": "react-scripts start"
+        }
+    ]
+}

@@ -1,7 +1,7 @@
 import React from "react"
 import {Box, Grid, Card, CardContent, CircularProgress, Typography, IconButton} from "@mui/material"
 import "../Styles.css"
-import OutboundIcon from '@mui/icons-material/Outbound';
+
 import CpuModal from "./cpu-graph";
 function CircleLoader(props){
     if(props.hide){
@@ -54,23 +54,23 @@ class StatCard extends React.Component {
 
     componentDidUpdate(prevProps, prevState){
         if(!this.mounted) return;
-        if(this.props.val == "undefined" || !this.props.val) return;
+        if(this.props.val === "undefined" || !this.props.val) return;
         let percent = this.props.val
         percent = parseInt(percent);
         if(percent > 0 && percent < 25){
-            if(prevState.color == "gray-card") return;
+            if(prevState.color === "gray-card") return;
             this.setState({color: "gray-card"});
             return;
         } else if(percent >25 && percent < 50){
-            if(prevState.color == "yellow-card") return;
+            if(prevState.color === "yellow-card") return;
             this.setState({color: "yellow-card"});
             return;
         } else if(percent >=50 && percent<74){
-            if(prevState.color == "orange-card") return;
+            if(prevState.color === "orange-card") return;
             this.setState({color: "orange-card"});
             return;
         } else if(percent >74) {
-            if(prevState.color == "red-card") return;
+            if(prevState.color === "red-card") return;
             this.setState({color: "red-card"});
             return;
         }

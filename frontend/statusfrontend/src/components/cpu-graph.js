@@ -1,5 +1,5 @@
 import React from "react"
-import {Modal, Box, Typography, Button} from "@mui/material"
+import {Modal, Box, Typography} from "@mui/material"
 import { LineChart, Line, CartesianGrid, YAxis, Area } from 'recharts';
 class CpuModal extends React.Component{
     constructor(props){
@@ -12,15 +12,12 @@ class CpuModal extends React.Component{
         if(prevProps === this.props){return;}
         let newList = this.state.cpuHist;
         newList = newList.concat({val: this.props.cpuStat})
-        console.log(newList.length)
         if(newList.length > 10){
             newList.splice(0, 1);
         }
-        console.log(newList)
         this.setState({
             cpuHist: newList
         })
-        console.log(this.state.cpuHist)
     }
 
     closeModal(){

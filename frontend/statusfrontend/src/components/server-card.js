@@ -8,7 +8,7 @@ class ServerInfo extends React.Component {
         this.state = {}
     }
     render(){
-        
+        try {
         return (
         <Grid item >
                 <Card variant="outlined"  >
@@ -29,6 +29,28 @@ class ServerInfo extends React.Component {
                 </Card>
             </Grid>
         )
+        } catch(err){
+            return (
+                <Grid item >
+                <Card variant="outlined"  >
+                <CardContent className={this.state.color}>
+                <center>
+                    <Typography variant="h5">
+                        Server Information
+                    </Typography>
+                    <Typography variant="p" style={{fontFamily: "roboto"}}>Server Nickname: Loading...</Typography>
+                    <br/>
+                    <Typography variant="p" style={{fontFamily: "roboto"}}>Running on user <i>Loading...</i></Typography>
+                    <br/>
+                    <Typography variant="p" style={{fontFamily: "roboto"}}>Loading...</Typography>
+                    <br/>
+                    <Typography variant="p" style={{fontFamily: "roboto"}}>ServerStatus started at Loading...</Typography>
+                </center>
+                </CardContent>
+                </Card>
+            </Grid>
+            )
+        }
     }
 }
 

@@ -9,7 +9,8 @@ class MinecraftWebsocketView extends React.Component{
         this.state = {
             connectedState: "Disconnected",
             messages: [],
-            modalOverflowStyle: "visible"
+            modalOverflowStyle: "visible", 
+            websocketerror: null
         }
         this.websocket = null
         this.connectToWebsocket = this.connectToWebsocket.bind(this)
@@ -17,13 +18,15 @@ class MinecraftWebsocketView extends React.Component{
 
     connectToWebsocket(){
         this.websocket = new WebSocket(this.props.stats.websocketip);
-        console.log("websocket made")
+        
         this.websocket.addEventListener("open", () => {
             this.setState({connectedState: `Connected to ${this.props.stats.name} WebSocket`})
+            this.setState({websocketerror: null})
         })
         this.websocket.addEventListener("error", (e)=> {
             this.setState({connectedState: "Something went wrong, please try again."})
-            console.error("WebSocket Error: "+  e);
+            console.error("WebSocket Error: ",  e);
+            this.setState({websocketerror: e});
         })
         this.websocket.addEventListener("message", (e) => {
             console.log(e.data)
@@ -56,6 +59,12 @@ class MinecraftWebsocketView extends React.Component{
             maxHeight: "70vh",
             overflowY: this.state.modalOverflowStyle
           };
+          let errorButton;
+          if(this.state.websocketerror){
+            errorButton = (<Button onClick={()=> {alert("Failed to connect to " + this.state.websocketerror.target.url);}}>Show More Details</Button>)
+          } else {
+            errorButton = (null);
+          }
         return (
             <Modal
             open={this.props.open}
@@ -71,6 +80,7 @@ class MinecraftWebsocketView extends React.Component{
                     </Typography>
                     <Typography variant="h6" style={{fontSize: "2vh"}}>For {this.props.stats.name} server</Typography>
                     <Button variant="filled" onClick={this.connectToWebsocket}>Reconnect to WebSocket</Button>
+                    {errorButton}
                 </center>
                 <Typography variant="p" style={{fontFamily: "roboto"}}>Current State: {this.state.connectedState}</Typography>
                 <div class="messages">

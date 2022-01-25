@@ -72,7 +72,7 @@ class MinecraftServer extends React.Component {
             websocket = (<><Button onClick={this.changeWebsocketView.bind(this)} style={{color: "black"}}>Open LiveView</Button><MinecraftWebsocketView open={this.state.websocketOpen} handleClose={this.changeWebsocketView.bind(this)} stats={this.props.stats}></MinecraftWebsocketView></>)
         } 
         return (
-            <Grid item >
+            <Grid item key={this.props.key}>
                 <Card variant="outlined"  >
                 <CardContent className={this.state.color}>
                     <center>

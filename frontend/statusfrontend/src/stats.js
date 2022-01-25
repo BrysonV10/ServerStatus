@@ -6,6 +6,7 @@ import Disk from "./components/disk-card.js"
 import MinecraftServer from "./components/mc-card.js"
 import "./Styles.css"
 import ServerInfo from "./components/server-card.js"
+import TerrariaServer from './components/terraria-card.js';
 import { getNiceErrorMsg } from './data/niceErrorNames.js';
 const apiURL = "https://ServerStatus.brysonvan1.repl.co/"
 
@@ -25,21 +26,27 @@ class Stats extends React.Component {
             version: "Not Loaded",
             ram: {used: null, total: null},
             mc:[],
-            serverInfo: null
+            serverInfo: null,
+            terraria: []
         }
+        this.getStats = this.getStats.bind(this);
+        this.getInitialStats = this.getInitialStats.bind(this);
     }
     getInitialStats(){
         console.log(apiURL)
         fetch(apiURL+"setup").then(res => res.json()).then(json => {
             this.setState({
                 version: json.version.toString(),
-                serverInfo:json.ComputerInfo
+                serverInfo:json.ComputerInfo,
+                isLoaded:false
             })
+        }).catch(err => {
+            this.setState({loaded: false, error: err})
         })
     }
     getStats(interupt){
         if(interupt){
-            this.setState({isLoaded: false, items: "Loading..."})
+            this.setState({isLoaded: false})
         }
         if(window.location.pathname === "/"){
             fetch(apiURL+"stats").then(res => res.json()).then(json => {
@@ -49,7 +56,8 @@ class Stats extends React.Component {
                     cpu: {cpuPer: json.cpu, cpuInfo:json.cpuInfo},
                     disk: {used: json.usedDisk, total: json.totalDisk},
                     ram: {used: json.usedRam, total: json.totalRam},
-                    mc: json.minecraftInfo
+                    mc: json.minecraftInfo,
+                    terraria: json.terrariaInfo
                 })
                 console.log(this.state);
             }).catch((err) => {
@@ -59,6 +67,10 @@ class Stats extends React.Component {
                 })
                 console.error("STATS ERROR: " + this.state.error)
             })
+
+            if(this.state.serverInfo == null){
+                this.getInitialStats()
+            }
         }
         
     }
@@ -68,18 +80,22 @@ class Stats extends React.Component {
         setTimeout(()=> {
             setInterval(() => {
                 this.getStats(false);
-            }, 4000)
-        }, 5000)
+            }, 10000)
+        }, 10000)
         
      }
     render() {
-        if(this.state.isLoaded === false){
+        if(this.state.isLoaded !== true){
+            let errMsg = this.state.error
+            
+            console.log(typeof this.state.error)
+            if(typeof errMsg == "object"){
+                errMsg = ""
+            }
             return (
                 <>
                 <CircularProgress/>
-                <Snackbar open={this.state.error !== null} autoHideDuration={300}>
-                    <Alert severity="error">{this.state.error}</Alert>
-                </Snackbar>
+                <Alert severity="error">{errMsg}</Alert>
                 </>
             )
         } else {
@@ -91,9 +107,11 @@ class Stats extends React.Component {
                 <Disk stat="Disk Usage" val={{used: this.state.disk.used, total: this.state.disk.total}} loading={this.state.isLoaded} />
                 <Disk stat="RAM Usage" val={{used: this.state.ram.used, total: this.state.ram.total}} loading={this.state.isLoaded} />
                 {this.state.mc.map((serverStats) => {
-                    return (<MinecraftServer stats={serverStats} loading={this.state.isLoaded}/>)
+                    return (<MinecraftServer key={serverStats.id} stats={serverStats} loading={this.state.isLoaded}/>)
                 })}
-               
+               {this.state.terraria.map((server) => {
+                   return (<TerrariaServer stats={server} key={server.id}/>)
+               })}
             </Grid>
             <Button onClick={this.getStats.bind(this)}>
                 Resync Stats

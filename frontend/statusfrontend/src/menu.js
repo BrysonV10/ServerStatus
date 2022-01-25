@@ -9,8 +9,8 @@ const AdminLogInButton = () => {
     const {loginWithRedirect, user, isAuthenticated} = useAuth0()
     let to;
     if(window.location.pathname === "/") {to = "/admin";}
-    if(window.location.pathname == "/admin"){to = "/"}
-    if(isAuthenticated == false){
+    if(window.location.pathname === "/admin"){to = "/"}
+    if(isAuthenticated === false){
         return (
             <>
             <Grid item>
@@ -40,11 +40,11 @@ const AdminLogOutButton = () => {
         return (
             <>
             <Grid item>
-            <Typography color="inherit">
-                <Link to={to} style={{color: "white", textDecoration: "none"}}>
-                    Admin Logout
-                </Link>
-            </Typography>
+                <Typography color="inherit">
+                    <Link to={to} style={{color: "white", textDecoration: "none"}}>Admin Logout</Link>
+                </Typography>
+            </Grid>
+            <Grid item>
             <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => logout()}>
                 <LockOpenIcon />
             </IconButton>
@@ -63,22 +63,24 @@ export default class TopMenu extends React.Component{
         this.state = {}
     } 
     render(){ 
-            return (
-            <>
-            <AppBar position="sticky">
-                <Toolbar className="navbar">
-                <Grid container direction="row" justify="space-between" alignItems="center">
-                    <Typography variant="h6">
-                        <Link to={"/"} style={{color: "white", textDecoration: "none"}}>ServerStatus Web Panel</Link>
-                    </Typography>
-                    </Grid>
-                    <Grid container direction="row" justifyContent="flex-end" alignItems="center" spacing={1}>
-                        <AdminLogInButton/>
-                        <AdminLogOutButton/>
-                    </Grid>
-                </Toolbar>
-            </AppBar>
-            </>
-        )
-        } 
+        let adminOn
+        adminOn="none";
+        return (
+        <>
+        <AppBar position="sticky">
+            <Toolbar className="navbar">
+            <Grid container direction="row" justify="space-between" alignItems="center">
+                <Typography variant="h6">
+                    <Link to={"/"} style={{color: "white", textDecoration: "none"}}>ServerStatus Web Panel</Link>
+                </Typography>
+                </Grid>
+                <Grid style={{display: adminOn}} container direction="row" justifyContent="flex-end" alignItems="center" spacing={1}>
+                    <AdminLogInButton/>
+                    <AdminLogOutButton/>
+                </Grid>
+            </Toolbar>
+        </AppBar>
+        </>
+    )
+    } 
         }
